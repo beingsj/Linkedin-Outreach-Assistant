@@ -19,14 +19,15 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
 // Visit Tracking
 let visitStartTimes = {};
+let trackingEnabled = false;
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+function onTabUpdated(tabId, changeInfo, tab) {
   if (changeInfo.status === "complete" && tab.url.includes("linkedin.com/in/")) {
     visitStartTimes[tabId] = Date.now();
   }
-});
+}
 
-chrome.tabs.onRemoved.addListener(async (tabId) => {
+function onTabRemoved(tabId) {
   const startTime = visitStartTimes[tabId];
   if (!startTime) return;
 
@@ -48,6 +49,36 @@ chrome.tabs.onRemoved.addListener(async (tabId) => {
 
     chrome.storage.local.set({ visitData });
   });
+}
+
+function registerVisitTracking() {
+  if (trackingEnabled) return;
+  chrome.tabs.onUpdated.addListener(onTabUpdated);
+  chrome.tabs.onRemoved.addListener(onTabRemoved);
+  trackingEnabled = true;
+}
+
+function unregisterVisitTracking() {
+  if (!trackingEnabled) return;
+  chrome.tabs.onUpdated.removeListener(onTabUpdated);
+  chrome.tabs.onRemoved.removeListener(onTabRemoved);
+  visitStartTimes = {};
+  trackingEnabled = false;
+}
+
+chrome.storage.sync.get(["trackVisits"], ({ trackVisits }) => {
+  if (trackVisits) registerVisitTracking();
+});
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "sync" && changes.trackVisits) {
+    const enabled = !!changes.trackVisits.newValue;
+    if (enabled) {
+      registerVisitTracking();
+    } else {
+      unregisterVisitTracking();
+    }
+  }
 });
 
 // Support data fetch from popup.js
