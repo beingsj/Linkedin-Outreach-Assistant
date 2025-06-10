@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LinkedIn Outreach Assistant - Options</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      color: #0073b1;
+      font-size: 20px;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      background: #0073b1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #bbb;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <h1>Outreach Assistant Settings</h1>
+
+  <label>
+    <input type="checkbox" id="trackVisits" />
+    Enable profile visit tracking
+  </label>
+
+  <button id="clearData" class="secondary">🗑 Clear Visit History</button>
+  <button id="exportVisits">📤 Export Visit Data</button>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    chrome.storage.sync.get(["trackVisits"], ({ trackVisits }) => {
+      $("trackVisits").checked = !!trackVisits;
+    });
+
+    $("trackVisits").onchange = () => {
+      chrome.storage.sync.set({ trackVisits: $("trackVisits").checked });
+    };
+
+    $("clearData").onclick = () => {
+      if (confirm("Clear all visit and log data?")) {
+        chrome.storage.local.remove(["visitLogs", "logs"]);
+        alert("Data cleared!");
+      }
+    };
+
+    $("exportVisits").onclick = async () => {
+      const { visitLogs = [] } = await chrome.storage.local.get("visitLogs");
+      if (!visitLogs.length) return alert("No visit data to export.");
+      const rows = [["Name", "URL", "Visit Count", "Total Time (s)"], ...visitLogs.map(v =>
+        [v.name, v.url, v.count, v.time]
+      )];
+      const csv = rows.map(row => row.map(f => `"${f}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      chrome.downloads.download({ url, filename: `visit-log-${Date.now()}.csv`, saveAs: true });
+    };
+  </script>
+</body>
+</html>

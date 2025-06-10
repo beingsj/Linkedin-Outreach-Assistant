@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>LinkedIn Outreach Assistant</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>LinkedIn Outreach Assistant</header>
+
+  <nav>
+    <button class="tab active" data-tab="templates">Templates</button>
+    <button class="tab" data-tab="auto">Auto Connect</button>
+    <button class="tab" data-tab="logs">Logs</button>
+    <button class="tab" data-tab="stats">Stats</button>
+    <button class="tab" data-tab="topProfiles">Top Profiles</button>
+  </nav>
+
+  <!-- Templates Tab -->
+  <section id="templates" class="active">
+    <div class="group">
+      <label for="clientSelect">Client:</label>
+      <select id="clientSelect"></select>
+      <button id="addClient" class="btn btn-primary">+ Add Client</button>
+    </div>
+
+    <div class="group">
+      <label for="templateSelect">Template:</label>
+      <select id="templateSelect"></select>
+      <div class="button-row">
+        <button id="addTemplate" class="btn">+ Add Template</button>
+        <button id="renameTemplate" class="btn">✏ Rename</button>
+        <button id="deleteTemplate" class="btn">🗑 Delete</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <label><input type="checkbox" id="defaultTemplateCheckbox" /> Set as default</label>
+      <label for="templateText">Message Template:</label>
+      <textarea id="templateText" placeholder="Hi {firstName}, I noticed you're a {tag} at {company}..."></textarea>
+      <div class="small">Variables: {firstName}, {title}, {company}, {tag}</div>
+      <button id="saveTemplate" class="btn btn-primary">💾 Save Template</button>
+    </div>
+
+    <div class="group">
+      <label>Live Preview:</label>
+      <div id="previewBox" class="preview">Preview appears here...</div>
+    </div>
+  </section>
+
+  <!-- Auto Connect Tab -->
+  <section id="auto">
+    <div class="group">
+      <label for="delayInput">Delay (minutes):</label>
+      <input type="number" id="delayInput" min="0.5" step="0.5" value="1" />
+      <button id="startQueueBtn" class="btn btn-primary">▶ Start</button>
+      <button id="stopQueueBtn" class="btn btn-secondary">■ Stop</button>
+    </div>
+  </section>
+
+  <!-- Logs Tab -->
+  <section id="logs">
+    <ul id="logList"></ul>
+    <button id="exportCsv" class="btn btn-secondary">📤 Export Logs</button>
+  </section>
+
+  <!-- Stats Tab -->
+  <section id="stats">
+    <div id="statsBox" class="small">Stats will appear here.</div>
+  </section>
+
+  <!-- Top Profiles Tab -->
+  <section id="topProfiles">
+    <div class="group">
+      <label>Most Visited Profiles:</label>
+      <ul id="topProfilesList" class="small"></ul>
+    </div>
+    <button id="exportVisits" class="btn btn-secondary">📤 Export Visit History</button>
+  </section>
+
+  <script src="popup.js" defer></script>
+</body>
+</html>

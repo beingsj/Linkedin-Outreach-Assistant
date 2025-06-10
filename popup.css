@@ -1,0 +1,149 @@
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  width: 375px;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+header {
+  background: #0073b1;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+nav {
+  display: flex;
+  background: #e0e0e0;
+  border-bottom: 1px solid #ccc;
+}
+
+nav button.tab {
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  background: #e0e0e0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+nav button.tab:hover {
+  background: #d3d3d3;
+}
+
+nav button.tab.active {
+  background-color: #fff;
+  border-bottom: 3px solid #0073b1;
+  color: #0073b1;
+}
+
+section {
+  display: none;
+  padding: 14px;
+}
+
+section.active {
+  display: block;
+}
+
+.group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+select, textarea, input[type="number"] {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+button.btn {
+  padding: 8px 12px;
+  margin-top: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background: #e0e0e0;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+button.btn-primary {
+  background-color: #0073b1;
+  color: white;
+}
+
+button.btn-secondary {
+  background-color: #ddd;
+}
+
+button.btn:hover {
+  opacity: 0.9;
+}
+
+.button-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.preview {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 13px;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  color: #333;
+}
+
+.small {
+  font-size: 12px;
+  color: #666;
+  margin-top: -6px;
+  margin-bottom: 10px;
+}
+
+#logList {
+  list-style: none;
+  padding-left: 0;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+#logList li {
+  background: #fff;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.4;
+}
