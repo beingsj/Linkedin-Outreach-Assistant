@@ -1,0 +1,35 @@
+mkdir -p .github/workflows
+cat > .github/workflows/auto-merge-codex.yml << 'EOF'
+name: Auto-approve & merge “codex” PRs
+
+on:
+  pull_request:
+    types: [opened, labeled]
+    branches: [ main ]
+
+jobs:
+  auto_merge:
+    if: contains(github.event.pull_request.labels.*.name, 'codex')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Approve PR
+        uses: peter-evans/approve-pull-request@v4
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          github-token:        ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge PR
+        uses: peter-evans/merge-pull-request@v2
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method:        merge    # or squash / rebase
+          github-token:        ${{ secrets.GITHUB_TOKEN }}
+EOF
+
+git add .github/workflows/auto-merge-codex.yml
+git commit -m "chore: add auto-approve & merge workflow for codex PRs"
+git push
